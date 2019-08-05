@@ -6,7 +6,7 @@ const MongoClient = require('mongodb').MongoClient
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 const dotenv = require('dotenv')
-
+const cors = require('cors')
 
 //APIs
 const agents = require('./api/agent')
@@ -17,6 +17,7 @@ const groups = require('./api/group')
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(cors())
 dotenv.config()
 
 app.listen(process.env.PORT || 3000, async()=> {
