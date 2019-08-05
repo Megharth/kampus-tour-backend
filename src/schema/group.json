@@ -1,0 +1,85 @@
+{
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "countrySalesHead": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "regionalSalesHead": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "citySalesHead": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "listOfHotels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
