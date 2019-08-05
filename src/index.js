@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 dotenv.config()
 
-(async()=> {
+app.listen(3000, async()=> {
   try {
     console.log('server started')
     const uri = process.env.DB
