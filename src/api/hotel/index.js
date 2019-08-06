@@ -148,10 +148,10 @@ module.exports = (db) => {
     }
   })
 
-  //GET /hotel/:email
-  router.get('/:email', async(req, res) => {
+  //POST /hotel/verifyEmail
+  router.post('/verifyEmail', async(req, res) => {
     try {
-      const result = Hotel.getByEmail(req.params.email)
+      const result = Hotel.getByEmail(req.body.email)
       if(result === null)
         res.status(200).json({message: "Email ID is unique"})
       else
