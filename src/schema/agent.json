@@ -60,14 +60,10 @@
             "type": "string"
           },
           "mobileNumber": {
-            "type": "string",
-            "minLength": 10,
-            "maxLength": 10
+            "type": "string"
           },
           "whatsappNumber": {
-            "type": "string",
-            "minLength": 10,
-            "maxLength": 10
+            "type": "string"
           },
           "email": {
             "type": "string"
@@ -84,14 +80,10 @@
             "type": "string"
           },
           "mobileNumber": {
-            "type": "string",
-            "minLength": 10,
-            "maxLength": 10
+            "type": "string"
           },
           "whatsappNumber": {
-            "type": "string",
-            "minLength": 10,
-            "maxLength": 10
+            "type": "string"
           },
           "email": {
             "type": "string"
