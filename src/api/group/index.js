@@ -110,6 +110,20 @@ module.exports = (db) => {
     }
   })
 
+  //POST /group/verifyEmail
+  router.post('/group/verifyEmail', async(req, res) => {
+    try {
+      const group = await Group.getByEmail(req.body.email)
+      if(group === null)
+        res.status(200).json({ message: "Email ID is unique" })
+      else
+        res.status(200).json({ message: "Email ID already exists"})
+
+    } catch (err) {
+      res.status(500).json({ message: err.message })
+    }
+  })
+
   //PUT /group
   router.put('/', auth, async(req, res) => {
     try {

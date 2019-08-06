@@ -118,6 +118,20 @@ module.exports = (db) => {
     }
   })
 
+  //POST /agent/verifyEmail
+  router.post('/agent/verifyEmail', async(req, res) => {
+    try {
+      const agent = await Agent.getByEmail(req.body.email)
+      if(agent === null)
+        res.status(200).json({ message: "Email ID is unique" })
+      else
+        res.status(200).json({ message: "Email ID already exists"})
+
+    } catch (err) {
+      res.status(500).json({ message: err.message })
+    }
+  })
+
 
   //PUT /agent
   router.put('/', auth, async(req, res) => {
