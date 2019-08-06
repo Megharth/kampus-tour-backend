@@ -156,6 +156,8 @@ module.exports = (db) => {
         res.status(200).json({message: "Email ID is unique"})
       else
         res.status(200).json({message: "Email ID already exists"})
+    } catch (err) {
+      res.status(500).json({message: err.message})
     }
   })
 
