@@ -126,7 +126,7 @@ module.exports = (db) => {
   })
 
   //GET /hotel
-  router.get('/', auth, async(req, res) => {
+  router.get('/', async(req, res) => {
     try {
       const result = await Hotel.getAll().toArray()
       res.status(200).json(result)

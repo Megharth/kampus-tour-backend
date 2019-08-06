@@ -154,7 +154,7 @@ module.exports = (db) => {
   })
 
   //GET /group
-  router.get('/', auth, async(req, res) => {
+  router.get('/', async(req, res) => {
     try {
       const result = await Group.getAll().toArray()
       res.status(200).json(result)
