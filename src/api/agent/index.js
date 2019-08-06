@@ -119,7 +119,7 @@ module.exports = (db) => {
   })
 
   //POST /agent/verifyEmail
-  router.post('/agent/verifyEmail', async(req, res) => {
+  router.post('/verifyEmail', async(req, res) => {
     try {
       const agent = await Agent.getByEmail(req.body.email)
       if(agent === null)

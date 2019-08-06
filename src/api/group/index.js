@@ -111,7 +111,7 @@ module.exports = (db) => {
   })
 
   //POST /group/verifyEmail
-  router.post('/group/verifyEmail', async(req, res) => {
+  router.post('/verifyEmail', async(req, res) => {
     try {
       const group = await Group.getByEmail(req.body.email)
       if(group === null)
