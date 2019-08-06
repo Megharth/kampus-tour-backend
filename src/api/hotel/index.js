@@ -138,13 +138,24 @@ module.exports = (db) => {
   //GET /hotel/:id
   router.get('/:id', auth, async(req, res) => {
     try {
-      const agent = await Hotel.get(req.params.id)
-      if(agent !== null)
-        res.status(200).json(agent)
+      const hotel = await Hotel.get(req.params.id)
+      if(hotel !== null)
+        res.status(200).json(hotel)
       else
         res.status(404).json({message: 'Hotel Not Found'})
     } catch (error) {
       res.status(500).json({message: error.message})
+    }
+  })
+
+  //GET /hotel/:email
+  router.get('/:email', async(req, res) => {
+    try {
+      const result = Hotel.getByEmail(req.params.email)
+      if(result === null)
+        res.status(200).json({message: "Email ID is unique"})
+      else
+        res.status(200).json({message: "Email ID already exists"})
     }
   })
 
