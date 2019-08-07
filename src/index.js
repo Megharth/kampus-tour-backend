@@ -33,7 +33,7 @@ app.listen(process.env.PORT || 3000, async()=> {
     app.use('/hotel', hotels(db))
     app.use('/group', groups(db))
   } catch (error) {
-    console.log(error.message)
+    console.log("index: " + error.message)
   }
 })
 

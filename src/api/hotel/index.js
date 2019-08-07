@@ -148,6 +148,7 @@ module.exports = (db) => {
     }
   })
 
+
   //POST /hotel/verifyEmail
   router.post('/verifyEmail', async(req, res) => {
     try {
@@ -157,6 +158,22 @@ module.exports = (db) => {
         res.status(200).json({message: "Email ID is unique"})
       else
         res.status(200).json({message: "Email ID already exists"})
+    } catch (err) {
+      res.status(500).json({message: err.message})
+    }
+  })
+
+  //GET /hotel/list/all
+  router.get('/list/all', async(req, res) => {
+    try {
+      const result = await Hotel.getAll().toArray()
+      let hotels = result.map( (hotel) => {
+        return {
+          name: hotel.hotelName,
+          city: hotel.hotelCity
+        }
+      })
+      res.status(200).json(hotels)
     } catch (err) {
       res.status(500).json({message: err.message})
     }
