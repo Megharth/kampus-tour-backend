@@ -42,6 +42,10 @@ module.exports = (db) => ({
     return db.collection('agents').findOne({email})
   },
 
+  getByName: (agencyName) => {
+    return db.collection('agents').findOne({agencyName})
+  },
+
   delete_one: (id) => {
     return db.collection('agents').deleteOne({_id: ObjectId(id)})
   }

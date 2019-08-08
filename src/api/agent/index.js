@@ -162,8 +162,8 @@ module.exports = (db) => {
     }
   })
 
-  //DELETE /agent/:id
-  router.delete('/:id', auth, async(req, res) => {
+  //DELETE /agent/get/:id
+  router.delete('/get/:id', auth, async(req, res) => {
     try {
       const deleted = await Agent.delete_one(req.params.id)
       if (deleted.CommandResult.message.Response.parsed === true) {
@@ -173,6 +173,19 @@ module.exports = (db) => {
       }
     } catch (error) {
       res.status(200).json({message: 'agent deleted'})
+    }
+  })
+
+  //GET /agent/agencyName/:agency
+  router.get('/agencyName/:agencyName', async(req, res) => {
+    try {
+      const result = await Agent.getByName(req.params.agencyName)
+      if(result === null)
+        res.status(200).json({message: "Agency Name is Unique"})
+      else
+        res.status(200).json({message: "Agency Name already exists"})
+    } catch (err) {
+      res.status(500).json({message: err.message})
     }
   })
 
