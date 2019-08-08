@@ -14,6 +14,17 @@ const groupSchema = require('../../schema/group')
 const Validator = require('jsonschema').Validator
 const validator = new Validator()
 
+//ROUTES
+
+//POST /group/create
+//POST /group/login
+//GET /group
+//GET /group/get/:id
+//GET /group/verifyEmail/:email
+//PUT /group
+//DELETE /group/:id
+//POST /group/add-hotel
+
 module.exports = (db) => {
   const Group = require('../../db/group')(db)
   const auth = require('../../middleware/auth')
@@ -35,33 +46,6 @@ module.exports = (db) => {
     }
   })
 
-  //POST /group/add-hotel
-  router.post('/add-hotel', auth, async(req, res) => {
-    try {
-      const newHotel = req.body.hotel
-      const _id = req.body.id
-
-      const group = await Group.get(_id)
-      let addHotel = true
-      group.hotels.forEach((hotel) => {
-        if(hotel.name === newHotel.name && hotel.city === newHotel.city) {
-          addHotel = false
-          return
-        }
-      })
-
-      if(addHotel) {
-        group.hotels.push(newHotel)
-        const result = await Group.update(group)
-        res.status(200).json('New Hotel added to the group')
-      }
-      else
-        res.status(200).json('Hotel Already exists in the group')
-
-    } catch (error) {
-      res.status(500).json({message: error.message})
-    }
-  })
   //POST /group/login
   router.post('/login', async(req, res) => {
     try {
@@ -110,10 +94,33 @@ module.exports = (db) => {
     }
   })
 
-  //POST /group/verifyEmail
-  router.post('/verifyEmail', async(req, res) => {
+  //GET /group
+  router.get('/', async(req, res) => {
     try {
-      const group = await Group.getByEmail(req.body.email)
+      const result = await Group.getAll().toArray()
+      res.status(200).json(result)
+    } catch (err) {
+      res.status(500).json({message: err.message})
+    }
+  })
+
+  //GET /group/get/:id
+  router.get('/get/:id', auth, async(req, res) => {
+    try {
+      const group = await Group.get(req.params.id)
+      if(group !== null)
+        res.status(200).json(group)
+      else
+        res.status(404).json({message: 'Group Not Found'})
+    } catch (error) {
+      res.status(500).json({message: error.message})
+    }
+  })
+
+  //GET /group/verifyEmail/:email
+  router.get('/verifyEmail/:email', async(req, res) => {
+    try {
+      const group = await Group.getByEmail(req.params.email)
       if(group === null)
         res.status(200).json({ message: "Email ID is unique" })
       else
@@ -167,24 +174,29 @@ module.exports = (db) => {
     }
   })
 
-  //GET /group
-  router.get('/', async(req, res) => {
+  //POST /group/add-hotel
+  router.post('/add-hotel', auth, async(req, res) => {
     try {
-      const result = await Group.getAll().toArray()
-      res.status(200).json(result)
-    } catch (err) {
-      res.status(500).json({message: err.message})
-    }
-  })
+      const newHotel = req.body.hotel
+      const _id = req.body.id
 
-  //GET /group/:id
-  router.get('/:id', auth, async(req, res) => {
-    try {
-      const group = await Group.get(req.params.id)
-      if(group !== null)
-        res.status(200).json(group)
+      const group = await Group.get(_id)
+      let addHotel = true
+      group.hotels.forEach((hotel) => {
+        if(hotel.name === newHotel.name && hotel.city === newHotel.city) {
+          addHotel = false
+          return
+        }
+      })
+
+      if(addHotel) {
+        group.hotels.push(newHotel)
+        const result = await Group.update(group)
+        res.status(200).json('New Hotel added to the group')
+      }
       else
-        res.status(404).json({message: 'Group Not Found'})
+        res.status(200).json('Hotel Already exists in the group')
+
     } catch (error) {
       res.status(500).json({message: error.message})
     }

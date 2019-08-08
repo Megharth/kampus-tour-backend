@@ -14,6 +14,17 @@ const hotelSchema = require('../../schema/hotel')
 const Validator = require('jsonschema').Validator
 const validator = new Validator()
 
+//ROUTES
+
+//POST /hotel/create
+//POST /hotel/login
+//GET /hotel
+//GET /hotel/get/:id
+//GET /hotel/verifyEmail/:email
+//PUT /hotel
+//DELETE /hotel/:id
+//GET /hotel/list/all
+
 module.exports = (db) => {
   const Hotel = require('../../db/hotel')(db)
   const auth = require('../../middleware/auth')
@@ -82,6 +93,43 @@ module.exports = (db) => {
     }
   })
 
+  //GET /hotel
+  router.get('/', async(req, res) => {
+    try {
+      const result = await Hotel.getAll().toArray()
+      res.status(200).json(result)
+    } catch (err) {
+      res.status(500).json({message: err.message})
+    }
+  })
+
+  //GET /hotel/get/:id
+  router.get('/get/:id', auth, async(req, res) => {
+    try {
+      const hotel = await Hotel.get(req.params.id)
+      if(hotel !== null)
+        res.status(200).json(hotel)
+      else
+        res.status(404).json({message: 'Hotel Not Found'})
+    } catch (error) {
+      res.status(500).json({message: error.message})
+    }
+  })
+
+  //GET /hotel/verifyEmail
+  router.get('/verifyEmail/:email', async(req, res) => {
+    try {
+      const result = await Hotel.getByEmail(req.body.email)
+
+      if(result === null)
+        res.status(200).json({message: "Email ID is unique"})
+      else
+        res.status(200).json({message: "Email ID already exists"})
+    } catch (err) {
+      res.status(500).json({message: err.message})
+    }
+  })
+
   //PUT /hotel
   router.put('/', auth, async(req, res) => {
     try {
@@ -122,44 +170,6 @@ module.exports = (db) => {
       }
     } catch (error) {
       res.status(200).json({message: 'Hotel deleted'})
-    }
-  })
-
-  //GET /hotel
-  router.get('/', async(req, res) => {
-    try {
-      const result = await Hotel.getAll().toArray()
-      res.status(200).json(result)
-    } catch (err) {
-      res.status(500).json({message: err.message})
-    }
-  })
-
-  //GET /hotel/:id
-  router.get('/:id', auth, async(req, res) => {
-    try {
-      const hotel = await Hotel.get(req.params.id)
-      if(hotel !== null)
-        res.status(200).json(hotel)
-      else
-        res.status(404).json({message: 'Hotel Not Found'})
-    } catch (error) {
-      res.status(500).json({message: error.message})
-    }
-  })
-
-
-  //POST /hotel/verifyEmail
-  router.post('/verifyEmail', async(req, res) => {
-    try {
-      const result = await Hotel.getByEmail(req.body.email)
-
-      if(result === null)
-        res.status(200).json({message: "Email ID is unique"})
-      else
-        res.status(200).json({message: "Email ID already exists"})
-    } catch (err) {
-      res.status(500).json({message: err.message})
     }
   })
 

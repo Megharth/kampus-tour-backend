@@ -14,6 +14,20 @@ const agentSchema = require('../../schema/agent')
 const Validator = require('jsonschema').Validator
 const validator = new Validator()
 
+
+//ROUTES
+
+//POST /agency/create
+//POST /agency/login
+//GET /agency
+//GET /agency/get/:id
+//GET /agency/verifyEmail/:email
+//PUT /agency
+//DELETE /agency/:id
+//GET /agent/agencyName/:agency
+
+
+
 module.exports = (db) => {
   const Agent = require('../../db/agent')(db)
   const auth = require('../../middleware/auth')
@@ -105,8 +119,8 @@ module.exports = (db) => {
   })
 
 
-  //GET /agent/:id
-  router.get('/:id', auth, async(req, res) => {
+  //GET /agent/get/:id
+  router.get('/get/:id', auth, async(req, res) => {
     try {
       const agent = await Agent.get(req.params.id)
       if(agent !== null)
@@ -118,10 +132,10 @@ module.exports = (db) => {
     }
   })
 
-  //POST /agent/verifyEmail
-  router.post('/verifyEmail', async(req, res) => {
+  //GET /agent/verifyEmail/:email
+  router.get('/verifyEmail/:email', async(req, res) => {
     try {
-      const agent = await Agent.getByEmail(req.body.email)
+      const agent = await Agent.getByEmail(req.params.email)
       if(agent === null)
         res.status(200).json({ message: "Email ID is unique" })
       else
@@ -162,8 +176,8 @@ module.exports = (db) => {
     }
   })
 
-  //DELETE /agent/get/:id
-  router.delete('/get/:id', auth, async(req, res) => {
+  //DELETE /agent/:id
+  router.delete('/:id', auth, async(req, res) => {
     try {
       const deleted = await Agent.delete_one(req.params.id)
       if (deleted.CommandResult.message.Response.parsed === true) {
