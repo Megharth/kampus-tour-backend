@@ -12,7 +12,7 @@ const cors = require('cors')
 const agents = require('./api/agent')
 const hotels = require('./api/hotel')
 const groups = require('./api/group')
-
+const travelGroup = require('./api/travelGroup')
 
 app.use(logger('dev'))
 app.use(bodyParser.json())
@@ -32,6 +32,7 @@ app.listen(process.env.PORT || 3000, async()=> {
     app.use('/agent', agents(db))
     app.use('/hotel', hotels(db))
     app.use('/group', groups(db))
+    app.use('/tg', travelGroup(db))
   } catch (error) {
     console.log("index: " + error.message)
   }

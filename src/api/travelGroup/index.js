@@ -8,53 +8,49 @@ const hashPassword = require('../../utils/hashPassword')
 const jwt = require('jsonwebtoken')
 
 //Schema
-const agentSchema = require('../../schema/agent')
+const tgSchema = require('../../schema/travelGroup')
 
 //Validator
 const Validator = require('jsonschema').Validator
 const validator = new Validator()
 
-
 //ROUTES
-
-//POST /agent/create
-//POST /agent/login
-//GET /agent
-//GET /agent/get/:id
-//GET /agent/verifyEmail/:email
-//PUT /agent
-//DELETE /agent/:id
-//GET /agent/agencyName/:agency
-
+//POST /tg/create
+//POST /tg/login
+//GET /tg
+//GET /tg/get/:id
+//GET /tg/verifyEmail/:email
+//PUT /tg
+//DELETE /tg/:id
 
 
 module.exports = (db) => {
-  const Agent = require('../../db/agent')(db)
+  const TravelGroup = require('../../db/travelGroup')(db)
   const auth = require('../../middleware/auth')
 
-  //POST /agent/create
+  //POST /tg/create
   router.post('/create', async(req, res) => {
-    const newAgent = req.body
+    const newGroup = req.body
     try {
       const error = new Error()
-      if(!validator.validate(newAgent, agentSchema).valid) {
+      if(!validator.validate(newGroup, tgSchema).valid) {
         error.message = 'Invalid Request'
         error.code = 'ValidationException'
         throw error
       }
 
-      const result = await Agent.create(newAgent)
-      res.status(200).json({message: 'Agent Created'})
+      const result = await TravelGroup.create(newGroup)
+      res.status(200).json({message: 'New Travel Group Created'})
     } catch(err) {
       res.status(500).json({ message: err.message })
     }
   })
 
-  //POST /agent/login
+  //POST /tg/login
   router.post('/login', async(req, res) => {
     try {
       const {email, password} = req.body
-      const result = await Agent.getByEmail(email)
+      const result = await TravelGroup.getByEmail(email)
 
       const error = new Error()
       if (!(email && password)) {
@@ -94,49 +90,37 @@ module.exports = (db) => {
         res.status(500)
       }
       res.json({message: error.message})
-
     }
   })
 
-
-  //GET /agent
+  //GET /tg
   router.get('/', auth, async(req, res) => {
     try {
-      const result = await Agent.getAll().toArray()
-      let finalResult = result.map((doc) => {
-        return {
-          _id: doc._id,
-          agencyName: doc.agencyName,
-          ownerFirstName: doc.ownerInfo.firstName,
-          ownerLastName: doc.ownerInfo.lastName,
-          city: doc.city
-        }
-      })
-      res.status(200).json(finalResult)
+      const result = await TravelGroup.getAll().toArray()
+      res.status(200).json(result)
     } catch (err) {
       res.status(500).json({message: err.message})
     }
   })
 
-
-  //GET /agent/get/:id
+  //GET /tg/get/:id
   router.get('/get/:id', auth, async(req, res) => {
     try {
-      const agent = await Agent.get(req.params.id)
-      if(agent !== null)
-        res.status(200).json(agent)
+      const travelGroup = await TravelGroup.get(req.params.id)
+      if(travelGroup !== null)
+        res.status(200).json(travelGroup)
       else
-        res.status(404).json({message: 'Agent Not Found'})
+        res.status(404).json({message: 'Travel Group Not Found'})
     } catch (error) {
       res.status(500).json({message: error.message})
     }
   })
 
-  //GET /agent/verifyEmail/:email
+  //GET /tg/verifyEmail/:email
   router.get('/verifyEmail/:email', async(req, res) => {
     try {
-      const agent = await Agent.getByEmail(req.params.email)
-      if(agent === null)
+      const travelGroup = await TravelGroup.getByEmail(req.params.email)
+      if(travelGroup === null)
         res.status(200).json({ message: "Email ID is unique" })
       else
         res.status(200).json({ message: "Email ID already exists"})
@@ -146,29 +130,28 @@ module.exports = (db) => {
     }
   })
 
-
-  //PUT /agent
+  //PUT /tg
   router.put('/', auth, async(req, res) => {
     try {
       const error = new Error();
-      if (!validator.validate(req.body, agentSchema).valid) {
+      if (!validator.validate(req.body, tgSchema).valid) {
         error.message = 'Invalid input';
         error.code = 'ValidationException';
         throw error;
       }
-      const updatedAgent = req.body;
-      const result = await Agent.update(updatedAgent);
-      const insertedAgent = result.message.documents[0];
+      const updatedTg = req.body;
+      const result = await TravelGroup.update(updatedTg);
+      const insertedTg = result.message.documents[0];
       if (result.result.n === 0) {
-        error.message = 'The Agent with the specified ID doesn\'t exist.';
-        error.code = 'AgentNotFound';
+        error.message = 'Travel Group with the specified ID doesn\'t exist.';
+        error.code = 'TGNotFound';
         throw error;
       }
-      res.status(200).json({message: 'Agent updated'});
+      res.status(200).json({message: 'Travel Group updated'});
     } catch (e) {
       if (e.code === 'ValidationException') {
         res.status(405).json({message: e.message});
-      } else if (e.code === 'AgentNotFound') {
+      } else if (e.code === 'TGNotFound') {
         res.status(404).json({message: e.message});
       } else {
         res.status(500).json({message: e.message});
@@ -176,28 +159,28 @@ module.exports = (db) => {
     }
   })
 
-  //DELETE /agent/:id
+  //DELETE /tg/:id
   router.delete('/:id', auth, async(req, res) => {
     try {
-      const deleted = await Agent.delete_one(req.params.id)
+      const deleted = await TravelGroup.delete_one(req.params.id)
       if (deleted.CommandResult.message.Response.parsed === true) {
-        res.status(200).json({message: 'agent deleted'})
+        res.status(200).json({message: 'Travel Group deleted'})
       } else {
-        res.status(404).json({message: 'agent not found'});
+        res.status(404).json({message: 'Travel Group not found'});
       }
     } catch (error) {
-      res.status(200).json({message: 'agent deleted'})
+      res.status(200).json({message: 'Travel Group deleted'})
     }
   })
 
-  //GET /agent/agencyName/:agency
-  router.get('/agencyName/:agencyName', async(req, res) => {
+  //GET /tg/tgName/:tg
+  router.get('/tgName/:tg', async(req, res) => {
     try {
-      const result = await Agent.getByName(req.params.agencyName)
+      const result = await TravelGroup.getByName(req.params.tg)
       if(result === null)
-        res.status(200).json({message: "Agency Name is Unique"})
+        res.status(200).json({message: "TG Name is Unique"})
       else
-        res.status(200).json({message: "Agency Name already exists"})
+        res.status(200).json({message: "TG Name already exists"})
     } catch (err) {
       res.status(500).json({message: err.message})
     }
