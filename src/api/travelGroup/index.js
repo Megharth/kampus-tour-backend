@@ -94,7 +94,7 @@ module.exports = (db) => {
   })
 
   //GET /tg
-  router.get('/', auth, async(req, res) => {
+  router.get('/', async(req, res) => {
     try {
       const result = await TravelGroup.getAll().toArray()
       res.status(200).json(result)
