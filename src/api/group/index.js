@@ -182,7 +182,7 @@ module.exports = (db) => {
 
       const group = await Group.get(_id)
       let addHotel = true
-      group.hotels.forEach((hotel) => {
+      group.listOfHotels.forEach((hotel) => {
         if(hotel.name === newHotel.name && hotel.city === newHotel.city) {
           addHotel = false
           return
@@ -190,7 +190,7 @@ module.exports = (db) => {
       })
 
       if(addHotel) {
-        group.hotels.push(newHotel)
+        group.listOfHotels.push(newHotel)
         const result = await Group.update(group)
         res.status(200).json('New Hotel added to the group')
       }
