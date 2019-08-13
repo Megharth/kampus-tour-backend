@@ -41,7 +41,7 @@ module.exports = (db) => ({
   },
 
   getByName: (groupName) => {
-    return db.collection('travelGroups').findOne({groupName})
+    return db.collection('travelGroups').findOne({Name: groupName})
   },
 
   delete_one: (id) => {

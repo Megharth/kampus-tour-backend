@@ -193,7 +193,7 @@ module.exports = (db) => {
   //GET /agent/agencyName/:agency
   router.get('/agencyName/:agencyName', async(req, res) => {
     try {
-      const result = await Agent.getByName(req.params.agencyName)
+      const result = await Agent.getByName(req.params.agencyName.toLowerCase())
       if(result === null)
         res.status(200).json({message: "Agency Name is Unique"})
       else

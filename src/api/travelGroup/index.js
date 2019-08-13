@@ -176,7 +176,7 @@ module.exports = (db) => {
   //GET /tg/tgName/:tg
   router.get('/tgName/:tg', async(req, res) => {
     try {
-      const result = await TravelGroup.getByName(req.params.tg)
+      const result = await TravelGroup.getByName(req.params.tg.toLowerCase())
       if(result === null)
         res.status(200).json({message: "TG Name is Unique"})
       else
