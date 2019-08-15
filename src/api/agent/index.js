@@ -124,8 +124,10 @@ module.exports = (db) => {
   router.get('/get/:id', auth, async(req, res) => {
     try {
       const agent = await Agent.get(req.params.id)
-      if(agent !== null)
+      if(agent !== null){
+        delete agent.password
         res.status(200).json(agent)
+      }
       else
         res.status(404).json({message: 'Agent Not Found'})
     } catch (error) {

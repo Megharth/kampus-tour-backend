@@ -74,6 +74,7 @@ module.exports = (db) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION_TIME})
         let group = result
         group.token = token
+        delete group.password
         res.status(200).json(group)
       }
       else {
@@ -99,7 +100,11 @@ module.exports = (db) => {
   router.get('/', async(req, res) => {
     try {
       const result = await Group.getAll().toArray()
-      res.status(200).json(result)
+      let finalResult = result.map((group) => {
+        delete group.password
+        return group
+      })
+      res.status(200).json(finalResult)
     } catch (err) {
       res.status(500).json({message: err.message})
     }
@@ -109,8 +114,11 @@ module.exports = (db) => {
   router.get('/get/:id', auth, async(req, res) => {
     try {
       const group = await Group.get(req.params.id)
-      if(group !== null)
+      if(group !== null){
+        delete group.password
         res.status(200).json(group)
+      }
+
       else
         res.status(404).json({message: 'Group Not Found'})
     } catch (error) {

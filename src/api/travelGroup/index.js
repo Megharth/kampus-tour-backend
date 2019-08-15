@@ -71,9 +71,10 @@ module.exports = (db) => {
           email
         }
         const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION_TIME})
-        let agent = result
-        agent.token = token
-        res.status(200).json(agent)
+        let tg = result
+        tg.token = token
+        delete tg.password
+        res.status(200).json(tg)
       }
       else {
         error.message = 'Invalid username or password'
@@ -98,7 +99,11 @@ module.exports = (db) => {
   router.get('/', async(req, res) => {
     try {
       const result = await TravelGroup.getAll().toArray()
-      res.status(200).json(result)
+      let finalResult = result.map((tg) => {
+        delete tg.password
+        return tg
+      })
+      res.status(200).json(finalResult)
     } catch (err) {
       res.status(500).json({message: err.message})
     }
@@ -108,8 +113,10 @@ module.exports = (db) => {
   router.get('/get/:id', auth, async(req, res) => {
     try {
       const travelGroup = await TravelGroup.get(req.params.id)
-      if(travelGroup !== null)
+      if(travelGroup !== null){
+        delete travelGroup.password
         res.status(200).json(travelGroup)
+      }
       else
         res.status(404).json({message: 'Travel Group Not Found'})
     } catch (error) {
