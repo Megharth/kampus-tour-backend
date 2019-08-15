@@ -15,8 +15,6 @@
     }
   },
   "required": [
-    "email",
-    "password",
-    "name"
+    "_id"
   ]
 }

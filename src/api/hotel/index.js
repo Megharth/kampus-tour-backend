@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken')
 
 //Schema
 const hotelSchema = require('../../schema/hotel')
+const hotelUpdateSchema = require('../../schema/hotelUpdate')
 
 //Validator
 const Validator = require('jsonschema').Validator
@@ -134,7 +135,7 @@ module.exports = (db) => {
   router.put('/', auth, async(req, res) => {
     try {
       const error = new Error();
-      if (!validator.validate(req.body, hotelSchema).valid) {
+      if (!validator.validate(req.body, hotelUpdateSchema).valid) {
         error.message = 'Invalid input';
         error.code = 'ValidationException';
         throw error;

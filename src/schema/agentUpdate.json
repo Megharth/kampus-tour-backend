@@ -1,0 +1,116 @@
+{
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "agencyName": {
+      "type": "string"
+    },
+    "ownerInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "mobileNumber": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10
+          },
+          "whatsappNumber": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10
+          },
+          "landlineNumber": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 10
+          }
+        }
+      }
+    },
+    "agencyType": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "purchaseDivisionHead": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "mobileNumber": {
+          "type": "string"
+        },
+        "whatsappNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "accountDivisionHead": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "mobileNumber": {
+          "type": "string"
+        },
+        "whatsappNumber": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "isPartOfTravelGroup": {
+      "type": "boolean"
+    },
+    "travelGroups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "isIATA": {
+      "type": "boolean"
+    },
+    "IATANumber": {
+      "type": "string"
+    },
+    "agentGST": {
+      "type": "string"
+    },
+    "agentPAN": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ]
+}

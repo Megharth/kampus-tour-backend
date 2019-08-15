@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 
 //Schema
 const agentSchema = require('../../schema/agent')
-
+const agentUpdateSchema = require('../../schema/agentUpdate')
 //Validator
 const Validator = require('jsonschema').Validator
 const validator = new Validator()
@@ -76,6 +76,7 @@ module.exports = (db) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION_TIME})
         let agent = result
         agent.token = token
+        delete agent.password
         res.status(200).json(agent)
       }
       else {
@@ -151,7 +152,7 @@ module.exports = (db) => {
   router.put('/', auth, async(req, res) => {
     try {
       const error = new Error();
-      if (!validator.validate(req.body, agentSchema).valid) {
+      if (!validator.validate(req.body, agentUpdateSchema).valid) {
         error.message = 'Invalid input';
         error.code = 'ValidationException';
         throw error;

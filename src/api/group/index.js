@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken')
 
 //Schema
 const groupSchema = require('../../schema/group')
+const groupUpdateSchema = require('../../schema/groupUpdate')
 
 //Validator
 const Validator = require('jsonschema').Validator
@@ -135,7 +136,7 @@ module.exports = (db) => {
   router.put('/', auth, async(req, res) => {
     try {
       const error = new Error();
-      if (!validator.validate(req.body, groupSchema).valid) {
+      if (!validator.validate(req.body, groupUpdateSchema).valid) {
         error.message = 'Invalid input';
         error.code = 'ValidationException';
         throw error;

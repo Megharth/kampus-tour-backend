@@ -1,0 +1,125 @@
+{
+  "type": "object",
+  "properties": {
+    "_id": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "isPartOfGroup": {
+      "type": "boolean"
+    },
+    "nameOfGroup": {
+      "type": "string"
+    },
+    "hotelName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hotelAddress": {
+      "type": "string"
+    },
+    "hotelCity": {
+      "type": "string"
+    },
+    "hotelState": {
+      "type": "string"
+    },
+    "hotelCountry": {
+      "type": "string"
+    },
+    "hotelContact": {
+      "type": "object",
+      "properties": {
+        "hotelLandline": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10
+        },
+        "hotelWebsite": {
+          "type": "string"
+        }
+      }
+    },
+    "hotelSalesTeam": {
+      "type": "object",
+      "properties": {
+        "hotelSalesIncharge": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 10
+            }
+          }
+        },
+        "hotelCountryHead": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 10
+            }
+          }
+        },
+        "hotelRegionHead": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "number": {
+              "type": "string",
+              "minLength": 10,
+              "maxLength": 10
+            }
+          }
+        }
+      }
+    },
+    "hotelRoomCategories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "categoryName": {
+            "type": "string"
+          },
+          "rakeRate": {
+            "type": "number"
+          },
+          "specialRate": {
+            "type": "number"
+          },
+          "specialRatePeriod": {
+            "type": "string"
+          },
+          "specialRatePlan": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "HotelGST": {
+      "type": "string"
+    },
+    "hotelPAN": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "_id"
+  ]
+}

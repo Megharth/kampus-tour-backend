@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken')
 
 //Schema
 const tgSchema = require('../../schema/travelGroup')
+const tgUpdateSchema = require('../../schema/travelGroupUpdate')
 
 //Validator
 const Validator = require('jsonschema').Validator
@@ -134,7 +135,7 @@ module.exports = (db) => {
   router.put('/', auth, async(req, res) => {
     try {
       const error = new Error();
-      if (!validator.validate(req.body, tgSchema).valid) {
+      if (!validator.validate(req.body, tgUpdateSchema).valid) {
         error.message = 'Invalid input';
         error.code = 'ValidationException';
         throw error;
