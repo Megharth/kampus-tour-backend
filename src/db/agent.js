@@ -46,6 +46,10 @@ module.exports = (db) => ({
     return db.collection('agents').findOne({agencyName})
   },
 
+  getByGroup: (groupName) => {
+    return db.collection('agents').find({travelGroups: groupName})
+  },
+
   delete_one: (id) => {
     return db.collection('agents').deleteOne({_id: ObjectId(id)})
   }
